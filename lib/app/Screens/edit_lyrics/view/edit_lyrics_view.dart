@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rap_generator/app/Constants/color_class.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Widgets/app_bar_widget.dart';
-import 'package:rap_generator/app/constants.dart';
+import 'package:rap_generator/app/Constants/text_class.dart';
 import '../../../Model/GptResponse/viewmodel/gpt_response_view_model.dart';
 import '../../../Navigation/navigator.dart';
 import '../../../Widgets/rich_textfield.dart';
@@ -35,14 +37,14 @@ class _EditLyricsViewState extends State<EditLyricsView> {
         title: const Text(editAppBarTitle),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: PaddingSizing.smallEdgeAll,
         child: Column(
           children: [
             Expanded(
               child: BuildRichTextField(
                   containerBorder: const Border(top: BorderSide.none),
-                  containerShadowColor: Colors.transparent,
-                  containerColor: Colors.white,
+                  containerShadowColor: LayoutColorLibrary.transparentColor,
+                  containerColor: LayoutColorLibrary.defaultBgColor,
                   containerElevation: 0,
                   textController: _textEditingController),
             ),

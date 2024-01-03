@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:rap_generator/app/Constants/color_class.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Navigation/navigator.dart';
 import 'package:rap_generator/app/Screens/home/view/home_view.dart';
 import 'package:rap_generator/app/Screens/onboarding_premium/store/elevated_button_store.dart';
 import 'package:rap_generator/app/Screens/settings/viewmodel/settings_view_model.dart';
 import 'package:rap_generator/app/Widgets/app_bar_widget.dart';
 import 'package:rap_generator/app/Widgets/elevated_button_widget.dart';
-import 'package:rap_generator/app/constants.dart';
+import 'package:rap_generator/app/Constants/text_class.dart';
 import 'package:rap_generator/app/rap_generator_icons.dart';
 
 bool isClicked = false;
@@ -56,14 +58,11 @@ class _OnboardingPremiumViewState extends State<OnboardingPremiumView> {
               style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 20,
+              height: SizedBoxSpacing.midHeight,
             ),
             Image.asset(onPreAds),
             const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(
-              height: 20,
+              height: SizedBoxSpacing.bigHeight,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -75,13 +74,13 @@ class _OnboardingPremiumViewState extends State<OnboardingPremiumView> {
                     onPressed: () {
                       _buttonStore.setClickedButtonIndex(0);
                     },
-                    color: defaultButtonColor,
+                    color: ButtonColorLibrary.defaultButtonColor,
                     text: weeklyText,
                     rText: priceLabel,
                     textColor: textColorControl(0),
                     gradient: buttonColorControl(0)),
                 const SizedBox(
-                  height: 10,
+                  height: SizedBoxSpacing.smallHeight,
                 ),
                 ElevatedButtonWidget(
                     roundedRectBorder: RoundedRectangleBorder(
@@ -90,13 +89,13 @@ class _OnboardingPremiumViewState extends State<OnboardingPremiumView> {
                     onPressed: () {
                       _buttonStore.setClickedButtonIndex(1);
                     },
-                    color: defaultButtonColor,
+                    color: ButtonColorLibrary.defaultButtonColor,
                     text: monthlyText,
                     rText: priceLabel,
                     textColor: textColorControl(1),
                     gradient: buttonColorControl(1)),
                 const SizedBox(
-                  height: 10,
+                  height: SizedBoxSpacing.smallHeight,
                 ),
                 ElevatedButtonWidget(
                   roundedRectBorder: RoundedRectangleBorder(
@@ -105,14 +104,14 @@ class _OnboardingPremiumViewState extends State<OnboardingPremiumView> {
                   onPressed: () {
                     _buttonStore.setClickedButtonIndex(2);
                   },
-                  color: defaultButtonColor,
+                  color: ButtonColorLibrary.defaultButtonColor,
                   text: annualText,
                   rText: priceLabel,
                   textColor: textColorControl(2),
                   gradient: buttonColorControl(2),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: SizedBoxSpacing.smallHeight,
                 ),
                 ElevatedButtonWidget(
                   onPressed: () async {
@@ -121,11 +120,11 @@ class _OnboardingPremiumViewState extends State<OnboardingPremiumView> {
                       page: const HomeView(),
                     );
                   },
-                  color: Colors.black,
+                  color: TextColorLibrary.blackTextColor,
                   text: elevatedButtonContinue,
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: SizedBoxSpacing.smallHeight,
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -151,14 +150,14 @@ class _OnboardingPremiumViewState extends State<OnboardingPremiumView> {
 
   LinearGradient? buttonColorControl(int index) {
     return _buttonStore.clickedButtonIndex == index
-        ? gradientButtonColor
+        ? ButtonColorLibrary.gradientButtonColor
         : null;
   }
 
   Color textColorControl(int index) {
     return _buttonStore.clickedButtonIndex == index
-        ? whiteTextColor
-        : blackTextColor;
+        ? TextColorLibrary.whiteTextColor
+        : TextColorLibrary.blackTextColor;
   }
 }
 
@@ -178,7 +177,7 @@ class SmallButton extends StatelessWidget {
         style: const TextStyle(
           decoration: TextDecoration.underline,
           fontSize: 12,
-          color: blackTextColor,
+          color: TextColorLibrary.blackTextColor,
         ),
       ),
     );

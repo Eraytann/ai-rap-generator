@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:rap_generator/app/Screens/beats/viewmodel/beats_view_model.dart';
 import 'package:rap_generator/app/Screens/prompt/view/prompt_view.dart';
 import 'package:rap_generator/app/Screens/rapper/viewmodel/rapper_view_model.dart';
+import '../../../../Constants/color_class.dart';
 import '../../../../constants.dart';
 
 part 'page_store.g.dart';
@@ -44,7 +45,7 @@ abstract class _PageStoreBase with Store {
 
   @action
   void changeButtonColor() {
-    currentGradient = gradientButtonColor;
+    currentGradient = ButtonColorLibrary.gradientButtonColor;
   }
 
   @action

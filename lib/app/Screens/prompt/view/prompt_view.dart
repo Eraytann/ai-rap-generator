@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:rap_generator/app/Screens/prompts_page/viewmodel/store/page_store.dart';
 import 'package:rap_generator/app/rap_generator_icons.dart';
+import '../../../Constants/padding_class.dart';
 import '../../../Navigation/navigator.dart';
 import '../../../Widgets/app_bar_widget.dart';
 import '../../../Widgets/gridview_widget.dart';
-import '../../../Widgets/radius_button_widget.dart';
 import '../../../Widgets/rich_textfield.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../viewmodel/prompt_view_model.dart';
+import '../widgets/scroll_widget.dart';
 
 final _viewModel = PromptViewModel();
 final _pageStore = PageStore();
@@ -24,6 +25,11 @@ class PromptView extends StatefulWidget {
 }
 
 class _PromptViewState extends State<PromptView> {
+  void closePage() {
+    _pageStore.finalFunc();
+    Navigation.ofPop();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,33 +52,40 @@ class _PromptViewState extends State<PromptView> {
             backgroundColor: Color.fromRGBO(250, 250, 250, 250),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: PaddingSizing.midEdgeAll,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(
-                  width: 380,
-                  height: 190,
+                  width: defaultMediaQueryWidth(context),
+                  height: minMediaQuery(context),
                   child: BuildRichTextField(
                     textController: promptController,
-                    onChanged: onChanged,
+                    onChanged: (newText) => _viewModel.onChanged(newText),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                _buildHorizontalScroll(context),
-                const SizedBox(height: 20.0),
-                Expanded(
-                  child: buildGridView(
-                    context,
-                    2,
-                    10.0,
-                    10.0,
-                    4,
-                    _viewModel.currentText,
-                    gridOnChanged,
-                  ),
+                SizedBox(height: SizedBoxSpacing.midHeight),
+                HorizontalScrollWidget(
+                  clickedButtonIndex: _viewModel.clickedButtonIndex,
+                  currentText: _viewModel.currentText,
+                  onPressedCallback: (index) =>
+                      _viewModel.buttonOnPressed(index),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: SizedBoxSpacing.midHeight),
+                Observer(builder: (_) {
+                  return Expanded(
+                    child: buildGridView(
+                      context,
+                      GridProperties.minCrossItemCount,
+                      GridSpace.smallSpace,
+                      GridSpace.smallSpace,
+                      GridProperties.minItemCount,
+                      _viewModel.currentText,
+                      gridOnChanged,
+                    ),
+                  );
+                }),
+                const SizedBox(height: SizedBoxSpacing.smallHeight),
               ],
             ),
           ),
@@ -85,103 +98,4 @@ class _PromptViewState extends State<PromptView> {
     _viewModel.onLabelSelected(selectedLabel);
     promptController.text = _viewModel.newTextFieldValue;
   }
-
-  onChanged(newText) {
-    _viewModel.onTextChanged(newText);
-  }
-
-  void closePage() {
-    _pageStore.finalFunc();
-    Navigation.ofPop();
-  }
-}
-
-Widget _buildHorizontalScroll(BuildContext context) {
-  return Observer(
-    builder: (_) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            GradientRadiusButton(
-              label: songGenreFun,
-              textColor: firstOpenedTextColor(),
-              gradient: firstOpenedGradient(),
-              onPressedCallback: () {
-                _viewModel.updateGrid(
-                  _viewModel.getLyricByGenre(SongGenre.fun),
-                );
-                _viewModel.setClickedButtonIndex(0);
-              },
-            ),
-            GradientRadiusButton(
-              label: songGenreHappy,
-              textColor: textColorControl(1),
-              gradient: buttonColorControl(1),
-              onPressedCallback: () {
-                _viewModel.updateGrid(
-                  _viewModel.getLyricByGenre(SongGenre.happy),
-                );
-                _viewModel.setClickedButtonIndex(1);
-              },
-            ),
-            GradientRadiusButton(
-              label: songGenreLove,
-              textColor: textColorControl(2),
-              gradient: buttonColorControl(2),
-              onPressedCallback: () {
-                _viewModel.updateGrid(
-                  _viewModel.getLyricByGenre(SongGenre.love),
-                );
-                _viewModel.setClickedButtonIndex(2);
-              },
-            ),
-            GradientRadiusButton(
-              label: songGenreSad,
-              textColor: textColorControl(3),
-              gradient: buttonColorControl(3),
-              onPressedCallback: () {
-                _viewModel.updateGrid(
-                  _viewModel.getLyricByGenre(SongGenre.sad),
-                );
-                _viewModel.setClickedButtonIndex(3);
-              },
-            ),
-            GradientRadiusButton(
-              label: songGenreSexy,
-              textColor: textColorControl(4),
-              gradient: buttonColorControl(4),
-              onPressedCallback: () {
-                _viewModel.updateGrid(
-                  _viewModel.getLyricByGenre(SongGenre.sexy),
-                );
-                _viewModel.setClickedButtonIndex(4);
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
-LinearGradient? firstOpenedGradient() {
-  return _viewModel.currentText == _viewModel.getLyricByGenre(SongGenre.fun)
-      ? gradientButtonColor
-      : null;
-}
-
-Color firstOpenedTextColor() {
-  return _viewModel.currentText == _viewModel.getLyricByGenre(SongGenre.fun)
-      ? whiteTextColor
-      : blackTextColor;
-}
-
-LinearGradient? buttonColorControl(int index) =>
-    _viewModel.clickedButtonIndex == index ? gradientButtonColor : null;
-
-Color textColorControl(int index) {
-  return _viewModel.clickedButtonIndex == index
-      ? whiteTextColor
-      : blackTextColor;
 }

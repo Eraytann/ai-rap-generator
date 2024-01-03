@@ -57,6 +57,38 @@ mixin _$PromptViewModel on _PromptViewModelBase, Store {
     });
   }
 
+  late final _$newTextAtom =
+      Atom(name: '_PromptViewModelBase.newText', context: context);
+
+  @override
+  String get newText {
+    _$newTextAtom.reportRead();
+    return super.newText;
+  }
+
+  @override
+  set newText(String value) {
+    _$newTextAtom.reportWrite(value, super.newText, () {
+      super.newText = value;
+    });
+  }
+
+  late final _$indexAtom =
+      Atom(name: '_PromptViewModelBase.index', context: context);
+
+  @override
+  int? get index {
+    _$indexAtom.reportRead();
+    return super.index;
+  }
+
+  @override
+  set index(int? value) {
+    _$indexAtom.reportWrite(value, super.index, () {
+      super.index = value;
+    });
+  }
+
   late final _$_PromptViewModelBaseActionController =
       ActionController(name: '_PromptViewModelBase', context: context);
 
@@ -105,7 +137,7 @@ mixin _$PromptViewModel on _PromptViewModelBase, Store {
   }
 
   @override
-  void setClickedButtonIndex(int index) {
+  void setClickedButtonIndex(dynamic index) {
     final _$actionInfo = _$_PromptViewModelBaseActionController.startAction(
         name: '_PromptViewModelBase.setClickedButtonIndex');
     try {
@@ -116,11 +148,24 @@ mixin _$PromptViewModel on _PromptViewModelBase, Store {
   }
 
   @override
+  void onChanged(String newText) {
+    final _$actionInfo = _$_PromptViewModelBaseActionController.startAction(
+        name: '_PromptViewModelBase.onChanged');
+    try {
+      return super.onChanged(newText);
+    } finally {
+      _$_PromptViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentText: ${currentText},
 newTextFieldValue: ${newTextFieldValue},
-clickedButtonIndex: ${clickedButtonIndex}
+clickedButtonIndex: ${clickedButtonIndex},
+newText: ${newText},
+index: ${index}
     ''';
   }
 }

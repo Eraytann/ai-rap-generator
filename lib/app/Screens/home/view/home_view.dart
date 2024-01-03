@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Features/premium_check/premium_check.dart';
 import 'package:rap_generator/app/Navigation/navigator.dart';
 import 'package:rap_generator/app/Screens/home/viewmodel/home_view_model.dart';
 import 'package:rap_generator/app/Screens/song_creator/view/song_creator_view.dart';
+import '../../../Constants/color_class.dart';
+import '../../../Constants/custom_font_class.dart';
 import '../../../Model/GptResponse/viewmodel/gpt_response_view_model.dart';
 import '../../../Widgets/app_bar_widget.dart';
 import '../../../Widgets/circle_button_widget.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../../../rap_generator_icons.dart';
 
 class HomeView extends StatefulWidget {
@@ -57,20 +60,20 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 buildText(
                   startButtonText,
-                  createButtonFontSize,
-                  homeStartLabelColor,
+                  CustomFontSizes.createButtonFontSize,
+                  TextColorLibrary.homeStartLabelColor,
                 ),
                 buildText(
                   generateLabelText,
-                  generateLabelFontSize,
-                  homeStartLabelColor,
+                  CustomFontSizes.generateLabelFontSize,
+                  TextColorLibrary.homeStartLabelColor,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: SizedBoxSpacing.smallHeight),
                 Observer(builder: (_) {
                   return Text(
                     _counterStore.counter == -1
-                        ? 'Unlimited'
-                        : 'Remaining Use: ${_counterStore.counter.toString()}',
+                        ? memberTypeText
+                        : '$remainingTime ${_counterStore.counter.toString()}',
                   );
                 }),
               ],
@@ -79,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
+        backgroundColor: LayoutColorLibrary.defaultRedColor,
         isExtended: true,
         onPressed: () {
           Navigation.push(
@@ -88,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
         },
         child: const Icon(
           Icons.library_music_rounded,
-          color: Colors.white,
+          color: LayoutColorLibrary.whiteIcon,
         ),
       ),
     );

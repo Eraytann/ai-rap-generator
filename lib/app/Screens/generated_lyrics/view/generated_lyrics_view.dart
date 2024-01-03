@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rap_generator/app/Constants/color_class.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import '../../../Model/GptResponse/viewmodel/gpt_response_view_model.dart';
 import '../../../Navigation/navigator.dart';
 import '../../../Widgets/app_bar_widget.dart';
 import '../../../Widgets/rich_textfield.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../../../rap_generator_icons.dart';
 
 class GeneratedLyricsView extends StatefulWidget {
@@ -22,15 +24,18 @@ class _GeneratedLyricsViewState extends State<GeneratedLyricsView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(FocusNode());
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        FocusScope.of(context).requestFocus(
+          FocusNode(),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text =
-        GetIt.I.get<GPTResponseViewModel>().chatGptResponse?.message ?? '';
+    getCurrentText();
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -43,7 +48,7 @@ class _GeneratedLyricsViewState extends State<GeneratedLyricsView> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: PaddingSizing.smallEdgeAll,
         child: Observer(builder: (_) {
           return GeneratedLyrics(
             textEditingController: _textEditingController,
@@ -51,6 +56,11 @@ class _GeneratedLyricsViewState extends State<GeneratedLyricsView> {
         }),
       ),
     );
+  }
+
+  void getCurrentText() {
+    _textEditingController.text =
+        GetIt.I.get<GPTResponseViewModel>().chatGptResponse?.message ?? '';
   }
 
   void closeThePage() {
@@ -68,7 +78,7 @@ class GeneratedLyrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: PaddingSizing.smallEdgeAll,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -89,7 +99,7 @@ class GeneratedLyrics extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: PaddingSizing.smallEdgeInsetsOnlyR,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -103,7 +113,7 @@ class GeneratedLyrics extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: SizedBoxSpacing.midHeight),
           Flexible(
             flex: 8,
             fit: FlexFit.tight,
@@ -113,8 +123,8 @@ class GeneratedLyrics extends StatelessWidget {
               child: BuildRichTextField(
                 readOnly: true,
                 containerBorder: const Border(top: BorderSide.none),
-                containerShadowColor: Colors.transparent,
-                containerColor: Colors.white,
+                containerShadowColor: LayoutColorLibrary.transparentColor,
+                containerColor: LayoutColorLibrary.defaultBgColor,
                 containerElevation: 0,
                 textController: _textEditingController,
               ),

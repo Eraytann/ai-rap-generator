@@ -25,18 +25,45 @@ mixin _$SongViewModel on _SongViewModelBase, Store {
     });
   }
 
-  late final _$fetchAndSetSongAsyncAction =
-      AsyncAction('_SongViewModelBase.fetchAndSetSong', context: context);
+  late final _$rapperImagesAtom =
+      Atom(name: '_SongViewModelBase.rapperImages', context: context);
 
   @override
-  Future<void> fetchAndSetSong(
+  List<String> get rapperImages {
+    _$rapperImagesAtom.reportRead();
+    return super.rapperImages;
+  }
+
+  @override
+  set rapperImages(List<String> value) {
+    _$rapperImagesAtom.reportWrite(value, super.rapperImages, () {
+      super.rapperImages = value;
+    });
+  }
+
+  late final _$fetchSetSongAsyncAction =
+      AsyncAction('_SongViewModelBase.fetchSetSong', context: context);
+
+  @override
+  Future<void> fetchSetSong(
       String? backingTrack, String? voiceModelUuid, List<String> lyricsData) {
-    return _$fetchAndSetSongAsyncAction.run(
-        () => super.fetchAndSetSong(backingTrack, voiceModelUuid, lyricsData));
+    return _$fetchSetSongAsyncAction.run(
+        () => super.fetchSetSong(backingTrack, voiceModelUuid, lyricsData));
   }
 
   late final _$_SongViewModelBaseActionController =
       ActionController(name: '_SongViewModelBase', context: context);
+
+  @override
+  void initService() {
+    final _$actionInfo = _$_SongViewModelBaseActionController.startAction(
+        name: '_SongViewModelBase.initService');
+    try {
+      return super.initService();
+    } finally {
+      _$_SongViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void addLocal(String songUrl, String title) {
@@ -52,7 +79,8 @@ mixin _$SongViewModel on _SongViewModelBase, Store {
   @override
   String toString() {
     return '''
-createdSong: ${createdSong}
+createdSong: ${createdSong},
+rapperImages: ${rapperImages}
     ''';
   }
 }

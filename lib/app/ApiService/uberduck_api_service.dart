@@ -1,49 +1,30 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:rap_generator/app/Exceptions/exceptions.dart';
 import 'package:rap_generator/app/Model/Song/model_song.dart';
-import '../Model/GptResponse/model/model_gpt_response.dart';
 import '../Model/Uberduck/BackingTracks/model/model_backing_track.dart';
 import '../Model/voices_model/voices_model.dart';
 import '../Model/voice_model/voice_model.dart';
-import '../constants.dart';
 import 'api_constants.dart';
 
-class ApiService {
-  final dio = Dio();
+abstract class IUberduckService {
+  Future<List<BackingTrackModel>> responseBeats();
+  Future<List<VoiceModel>> fetchVoiceUuids();
+  Future<VoiceModel> fetchVoiceDetails(VoicesModel voiceUuidModel);
+  Future<SongModel> responseSong(
+      String? backingTrack, String? voiceModelUuid, List<String> lyricsData);
+}
 
-  Future<GPTMessageResponseModel> responseRequest(String prompt) async {
-    String url = ApiChatGpt.baseUrl;
+class UberduckService implements IUberduckService {
+  final Dio _networkManager;
+  UberduckService()
+      : _networkManager = Dio(BaseOptions(baseUrl: ApiUberduck.baseUrl));
 
-    final requestData = {
-      'model': 'gpt-3.5-turbo-0613',
-      "messages": [
-        {"role": "user", "content": command + prompt}
-      ],
-      "max_tokens": 250
-    };
-    try {
-      final response = await dio.post(
-        url,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${ApiChatGpt.apiKey}',
-            'Content-Type': 'application/json',
-          },
-        ),
-        data: requestData,
-      );
-
-      var jsonResponse = response.data;
-      var chatGptResponse = GPTMessageResponseModel.fromJson(jsonResponse);
-      return chatGptResponse;
-    } catch (e) {
-      return GPTMessageResponseModel(message: 'Error $e');
-    }
-  }
-
+  @override
   Future<List<BackingTrackModel>> responseBeats() async {
-    const String url = ApiUberduck.baseUrl;
-
+    String tracksEndPoint = 'reference-audio/backing-tracks?detailed=true';
+    String apiKey = ApiUberduck.tracksApiKey;
     try {
       final requestData = {
         'name': 'name',
@@ -53,18 +34,18 @@ class ApiService {
         'url': 'url',
       };
 
-      final response = await dio.get(
-        url,
+      final response = await _networkManager.get(
+        tracksEndPoint,
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${ApiUberduck.apiKey}',
+            'Authorization': 'Bearer $apiKey',
             'Content-Type': 'application/json',
           },
         ),
         queryParameters: requestData,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         List<BackingTrackModel> backingTracks =
             (response.data['backing_tracks'] as List)
                 .map((track) => BackingTrackModel.fromJson(track))
@@ -72,20 +53,25 @@ class ApiService {
 
         return backingTracks;
       } else {
-        throw Exception("Request failed. Status Code: ${response.statusCode}");
+        throw ApiException(
+            "Request failed. Status Code: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception();
+      throw NetworkException(e.toString());
     }
   }
 
+  @override
   Future<List<VoiceModel>> fetchVoiceUuids() async {
+    String voiceEndPoint =
+        'voices?mode=tts-rap&language=english&is_commercial=true';
+
     try {
-      final response = await dio.get(
-        'https://api.uberduck.ai/voices?mode=tts-rap&language=english&is_commercial=true',
+      final response = await _networkManager.get(
+        voiceEndPoint,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         final List<dynamic> data = response.data;
         final List<VoiceModel> voiceDetailsList = [];
 
@@ -96,35 +82,39 @@ class ApiService {
         }
         return voiceDetailsList;
       } else {
-        throw Exception('Failed to load data');
+        throw ApiException('Failed to load data');
       }
     } catch (e) {
-      throw Exception('Error: $e');
+      throw NetworkException(e.toString());
     }
   }
 
+  @override
   Future<VoiceModel> fetchVoiceDetails(VoicesModel voiceUuidModel) async {
+    String voicesEndPoint = 'voices/${voiceUuidModel.voicemodelUuid}/detail';
+
     try {
-      final response = await dio.get(
-        'https://api.uberduck.ai/voices/${voiceUuidModel.voicemodelUuid}/detail',
+      final response = await _networkManager.get(
+        voicesEndPoint,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         final Map<String, dynamic> data = response.data;
 
         final VoiceModel voiceDetailsModel = VoiceModel.fromJson(data);
         return voiceDetailsModel;
       } else {
-        throw Exception('Voice details has not been loaded!');
+        throw ApiException('Voice Details has not been loaded');
       }
     } catch (e) {
-      throw Exception('Hata: $e');
+      throw NetworkException(e.toString());
     }
   }
 
+  @override
   Future<SongModel> responseSong(String? backingTrack, String? voiceModelUuid,
       List<String> lyricsData) async {
-    String url = ApiUberduck.freeStyleUrl;
+    String backingTrackEndPoint = 'tts/freestyle';
     String apiKey = ApiUberduck.freeStyleApiKey;
 
     Map<String, dynamic> postData = {
@@ -136,8 +126,8 @@ class ApiService {
     String jsonString = jsonEncode(postData);
 
     try {
-      final response = await dio.post(
-        url,
+      final response = await _networkManager.post(
+        backingTrackEndPoint,
         options: Options(
           headers: {
             'Authorization': 'Basic $apiKey',
@@ -147,30 +137,16 @@ class ApiService {
         data: jsonString,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == HttpStatus.ok) {
         var jsonResponse = response.data;
         var createdSong = SongModel.fromJson(jsonResponse);
         return createdSong;
       } else {
-        throw Exception('Failed to make the request, ${response.statusCode}');
+        throw ApiException(
+            'Failed to make the request, ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to make the request $e');
+      throw NetworkException('Failed to make the request $e');
     }
   }
 }
-
-/*
-
-      if (response.statusCode == 200) {
-        var jsonResponse = response.data;
-        var createdSong = SongModel.fromJson(jsonResponse);
-        return createdSong;
-      } else {
-        throw Exception('Failed to make the request, ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Failed to make the request $e');
-    }
-  }
-*/

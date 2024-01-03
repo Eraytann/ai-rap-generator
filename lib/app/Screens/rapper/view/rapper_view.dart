@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Model/voice_model/voice_model.dart';
 import 'package:rap_generator/app/Widgets/Music%20Player/store/click_store.dart';
 import 'package:rap_generator/app/Widgets/Music%20Player/viewmodel/audio_player_view_model.dart';
 import 'package:rap_generator/app/Widgets/app_bar_widget.dart';
-import 'package:rap_generator/app/constants.dart';
+import 'package:rap_generator/app/Constants/text_class.dart';
 import 'package:rap_generator/app/rap_generator_icons.dart';
+import '../../../Constants/color_class.dart';
 import '../../../Navigation/navigator.dart';
 import '../../../Widgets/progress_widget.dart';
 import '../viewmodel/rapper_view_model.dart';
@@ -27,6 +29,7 @@ class _RapperViewState extends State<RapperView> {
   @override
   void initState() {
     super.initState();
+    _viewModel.initService();
     _viewModel.fetchVoiceUuids();
   }
 
@@ -53,7 +56,7 @@ class _RapperViewState extends State<RapperView> {
         builder: (_) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: PaddingSizing.smallEdgeAll,
               child: FutureBuilder(
                 future: _viewModel.fetchVoiceUuids(),
                 builder: (context, snapshot) {
@@ -73,11 +76,13 @@ class _RapperViewState extends State<RapperView> {
     } else if (snapshot.hasError) {
       return Text('Error: ${snapshot.error}');
     } else {
-      return buildVoiceList(_viewModel.voiceList);
+      return buildVoiceList();
     }
   }
 
-  Widget buildVoiceList(List<VoiceModel> voiceList) {
+  Widget buildVoiceList() {
+    List<VoiceModel>? voiceList = _viewModel.voiceDetailsList;
+    const edgeInsets = EdgeInsets.only(bottom: 15.0, left: 10, right: 10);
     List<String> rapperImages = addBg();
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -86,11 +91,12 @@ class _RapperViewState extends State<RapperView> {
         mainAxisSpacing: 1.0,
         mainAxisExtent: 182,
       ),
-      itemCount: voiceList.length,
+      itemCount: voiceList?.length ?? 0,
       itemBuilder: (context, index) {
-        final voice = voiceList[index];
+        final voice = voiceList?[index];
+
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: PaddingSizing.smallEdgeAll,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(13),
             child: SizedBox(
@@ -103,20 +109,19 @@ class _RapperViewState extends State<RapperView> {
                     fit: BoxFit.cover,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 15.0, left: 10, right: 10),
+                    padding: edgeInsets,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          (voice.displayName.toString().length > 15)
+                          (voice!.displayName.toString().length > 15)
                               ? '${voice.displayName.toString().substring(0, 15)}...'
                               : voice.displayName.toString(),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: rapperNameTextColor,
+                            color: TextColorLibrary.rapperNameTextColor,
                           ),
                         ),
                         Observer(builder: (_) {
@@ -128,7 +133,7 @@ class _RapperViewState extends State<RapperView> {
                               (_clickStore.isButtonClickedList[index])
                                   ? RapGenerator.iconPauseSong
                                   : RapGenerator.iconPlay,
-                              color: defaultButtonColor,
+                              color: ButtonColorLibrary.defaultButtonColor,
                             ),
                           );
                         })

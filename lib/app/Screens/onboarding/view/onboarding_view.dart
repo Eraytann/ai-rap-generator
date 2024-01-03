@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:rap_generator/app/Constants/color_class.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Navigation/navigator.dart';
 import '../../../Widgets/elevated_button_widget.dart';
 import '../../../Widgets/slider_widget.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../../home/view/home_view.dart';
 import '../viewmodel/onboarding_view_model.dart';
 
@@ -44,11 +46,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
             }),
             CustomPageIndicator(pageController: _pageController),
             const SizedBox(
-              height: 40,
+              height: SizedBoxSpacing.maxHeight,
             ),
             _forwardButton(),
             const SizedBox(
-              height: 45,
+              height: SizedBoxSpacing.maxHeight,
             ),
           ],
         ),
@@ -82,9 +84,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
           }
         });
       },
-      color: Colors.pink,
+      color: ButtonColorLibrary.pink,
       text: elevatedButtonNext,
-      gradient: gradientButtonColor,
+      gradient: ButtonColorLibrary.gradientButtonColor,
     );
   }
 
@@ -135,6 +137,7 @@ class OnboardingPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const edgeInsets = EdgeInsets.only(top: 20, left: 20, right: 20);
     return Column(
       children: [
         Stack(children: [
@@ -148,8 +151,8 @@ class OnboardingPageContent extends StatelessWidget {
             right: 0,
             child: Container(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height,
-                maxWidth: MediaQuery.of(context).size.width,
+                maxHeight: defaultMediaQueryHeight(context),
+                maxWidth: defaultMediaQueryWidth(context),
               ),
               color: const Color.fromRGBO(250, 250, 250, 250),
               child: Image.asset(
@@ -165,7 +168,7 @@ class OnboardingPageContent extends StatelessWidget {
           ),
         ]),
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: edgeInsets,
           child: Center(
             child: Column(
               children: [
@@ -175,7 +178,7 @@ class OnboardingPageContent extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: SizedBoxSpacing.midHeight,
                 ),
                 Text(
                   content,

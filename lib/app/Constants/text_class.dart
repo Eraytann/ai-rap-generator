@@ -1,6 +1,3 @@
-//AppBar Title
-import 'package:flutter/material.dart';
-
 //App Title
 const String appTitle = 'AI Rap Generator';
 
@@ -101,7 +98,9 @@ const String termsLabel = "Terms of Use";
 const String restoreLabel = "Restore Purchase";
 const String privacyLabel = "Privacy Policy";
 
-//Premium Prices
+//Premium Texts
+const String memberTypeText = "Unlimited";
+const String remainingTime = "Remaining Use:";
 const String weeklyText = "Weekly";
 const String monthlyText = "Monthly";
 const String annualText = "Annual";
@@ -109,16 +108,6 @@ const String priceLabel = "\$40";
 
 //Progress Text
 const String progressText = "Please wait while we are generating your song";
-
-//Button Sizes
-const double plusIconSize = 48;
-
-//Font Sizes
-const double elevatedBtnFontSize = 21.0;
-const double onboardingHeadlineFontSize = 25;
-const double onboardingContextFontSize = 18;
-const double createButtonFontSize = 24;
-const double generateLabelFontSize = 15;
 
 //URL
 const String webviewNavigateUrl = 'https://neonapps.co';
@@ -142,43 +131,10 @@ const String webviewUrl = 'https://neonapps.co/';
 //Animation
 const String lottieLoading = 'assets/lottie/loading_animation.json';
 
-//Chat Gpt Commanda
+//Chat Gpt Commands
 const String command =
     "Create lyrics based on the text I send. The number of words should not exceed 250. Just share the lyrics. Text: ";
 
-//Button Colors
-const Color defaultButtonColor = Color.fromRGBO(255, 255, 255, 1);
-const Color onboardingButtonColor = Colors.transparent;
-const Color homeButtonCreateButtonColor = Color(0xFFE8455B);
-const Color elevatedButtonPromptColor = Color.fromARGB(255, 41, 41, 41);
-const LinearGradient defaultGradient =
-    LinearGradient(colors: [Colors.white, Colors.white10]);
-const LinearGradient gradientButtonColor = LinearGradient(
-  colors: [
-    Color(0xFFF35C70),
-    Color(0xFFE54157),
-    Color(0xFFDC2D96),
-  ],
-);
-
-//Text Colors
-const Color homeStartLabelColor = Color(0xFFA9A9A9);
-const Color whiteTextColor = Colors.white;
-const Color blackTextColor = Colors.black;
-
-//PromptGridTextColor
-const Color gridTextColor = Colors.black;
-const double gridTextFontSize = 17;
-const Color gridBackgroundColor = Colors.white;
-
-//RapperGridViewColors
-const Color rapperNameTextColor = Colors.white;
-
-//Background Colors
-const Color promptPageBg = Color.fromRGBO(250, 250, 250, 1);
-
-//Progress Color
-const Color progressBarColor = Color(0xFFE8455B);
-
-//Icon Color
-const Color whiteIcon = Colors.white;
+//Error Widgets Texts
+const String dataError = "Data not received: Error";
+const String dataDidNotFound = "No data available";

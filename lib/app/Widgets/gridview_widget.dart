@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Constants/color_class.dart';
+import '../Constants/custom_font_class.dart';
 import '../constants.dart';
 
 Widget buildGridView(
@@ -24,7 +26,7 @@ Widget buildGridView(
       itemBuilder: (BuildContext context, int index) {
         return Container(
           decoration: BoxDecoration(
-            color: gridBackgroundColor,
+            color: LayoutColorLibrary.gridBackgroundColor,
             borderRadius: BorderRadius.circular(13),
           ),
           child: Center(
@@ -33,8 +35,8 @@ Widget buildGridView(
               child: Text(
                 substringText(text),
                 style: const TextStyle(
-                  color: gridTextColor,
-                  fontSize: gridTextFontSize,
+                  color: TextColorLibrary.gridTextColor,
+                  fontSize: CustomFontSizes.gridTextFontSize,
                 ),
                 textAlign: TextAlign.center,
               ),

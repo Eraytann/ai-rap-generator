@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Screens/prompts_page/viewmodel/store/page_store.dart';
 import '../../../Model/Uberduck/BackingTracks/model/model_backing_track.dart';
 import '../../../Navigation/navigator.dart';
 import '../../../Widgets/Music Player/music_player.dart';
 import '../../../Widgets/app_bar_widget.dart';
 import '../../../Widgets/progress_widget.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../../../rap_generator_icons.dart';
 import '../viewmodel/beats_view_model.dart';
 import '../widgets/error_widgets.dart';
@@ -27,6 +28,7 @@ class _BeatsViewState extends State<BeatsView> {
   @override
   void initState() {
     super.initState();
+    _viewModel.initService();
     _pageStore.currentGradient = null;
     _viewModel.selectedBeatIndex = -1;
   }
@@ -51,7 +53,7 @@ class _BeatsViewState extends State<BeatsView> {
         title: const Text(selectBeatAppBarTitle),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        padding: PaddingSizing.smallVertical,
         child: Center(
           child: buildFutureBuilder(),
         ),

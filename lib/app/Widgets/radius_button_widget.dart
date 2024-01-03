@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rap_generator/app/constants.dart';
+import '../Constants/color_class.dart';
 
 class GradientRadiusButton extends StatelessWidget {
   final String label;
@@ -24,7 +24,7 @@ class GradientRadiusButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           gradient: gradient,
-          color: defaultButtonColor,
+          color: ButtonColorLibrary.defaultButtonColor,
         ),
         child: ElevatedButton(
           onPressed: onPressedCallback,
@@ -39,7 +39,7 @@ class GradientRadiusButton extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: textColor ?? blackTextColor,
+              color: textColor ?? TextColorLibrary.blackTextColor,
             ),
           ),
         ),

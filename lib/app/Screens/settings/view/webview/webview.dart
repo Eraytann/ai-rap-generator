@@ -4,6 +4,7 @@ import 'package:rap_generator/app/Navigation/navigator.dart';
 import 'package:rap_generator/app/Widgets/app_bar_widget.dart';
 import 'package:rap_generator/app/rap_generator_icons.dart';
 
+import '../../../../Constants/color_class.dart';
 import '../../../../constants.dart';
 
 class WebviewPage extends StatefulWidget {
@@ -26,20 +27,20 @@ class _WebviewPageState extends State<WebviewPage> {
         leadingIcon: IconButton(
           icon: const Icon(
             RapGenerator.iconPrevious,
-            color: whiteIcon,
+            color: LayoutColorLibrary.whiteIcon,
           ),
           onPressed: closePage,
         ),
-        backgroundColor: progressBarColor,
+        backgroundColor: LayoutColorLibrary.progressBarColor,
         title: const Text(
           webviewUrl,
-          style: TextStyle(color: whiteTextColor),
+          style: TextStyle(color: TextColorLibrary.whiteTextColor),
         ),
         actions: IconButton(
           onPressed: refreshPage,
           icon: const Icon(
             RapGenerator.iconRefresh,
-            color: whiteIcon,
+            color: LayoutColorLibrary.whiteIcon,
           ),
         ),
       ),
@@ -50,7 +51,7 @@ class _WebviewPageState extends State<WebviewPage> {
             child: progress < 1.0
                 ? LinearProgressIndicator(
                     value: progress,
-                    color: progressBarColor,
+                    color: LayoutColorLibrary.progressBarColor,
                   )
                 : Container(),
           ),

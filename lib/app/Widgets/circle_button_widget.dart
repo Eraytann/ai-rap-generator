@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Constants/color_class.dart';
+import '../Constants/custom_font_class.dart';
 import '../constants.dart';
 import '../rap_generator_icons.dart';
 
@@ -20,14 +22,15 @@ class CircleButton extends StatelessWidget {
           Container(
             width: 100.0,
             height: 100.0,
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: homeButtonCreateButtonColor),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: ButtonColorLibrary.homeButtonCreateButtonColor),
             child: IconButton(
               onPressed: onPressed,
               icon: const Icon(
                 RapGenerator.iconPlus,
-                color: defaultButtonColor,
-                size: plusIconSize,
+                color: ButtonColorLibrary.defaultButtonColor,
+                size: CustomFontSizes.plusIconSize,
               ),
             ),
           ),

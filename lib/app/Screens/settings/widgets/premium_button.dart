@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../Constants/color_class.dart';
 import '../../../constants.dart';
 import '../viewmodel/settings_view_model.dart';
 
@@ -26,7 +27,7 @@ class PremiumButton extends StatelessWidget {
                     const Text(
                       elevatedButtonPremium,
                       style: TextStyle(
-                        color: whiteTextColor,
+                        color: TextColorLibrary.whiteTextColor,
                         fontSize: elevatedBtnFontSize,
                       ),
                     ),

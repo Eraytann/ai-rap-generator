@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rap_generator/app/ApiService/api_service.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Features/premium_check/premium_check.dart';
 import 'package:rap_generator/app/Navigation/navigator.dart';
 import 'package:rap_generator/app/Screens/beats/viewmodel/beats_view_model.dart';
 import 'package:rap_generator/app/Screens/rapper/viewmodel/rapper_view_model.dart';
 import 'package:rap_generator/app/Screens/song/view/song_view.dart';
 import 'package:rap_generator/app/Screens/song/viewmodel/song_view_model.dart';
+import '../../../Constants/color_class.dart';
 import '../../../Model/GptResponse/viewmodel/gpt_response_view_model.dart';
 import '../../../Widgets/Music Player/viewmodel/audio_player_view_model.dart';
 import '../../../Widgets/elevated_button_widget.dart';
 import '../../../Widgets/loading_page.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../../beats/view/beats_view.dart';
 import '../../edit_lyrics/view/edit_lyrics_view.dart';
 import '../../generated_lyrics/view/generated_lyrics_view.dart';
@@ -22,7 +23,6 @@ import '../../rapper/view/rapper_view.dart';
 import '../viewmodel/page_controller_manager.dart';
 import '../viewmodel/store/page_store.dart';
 
-final ApiService apiService = ApiService();
 final CounterStore counterStore = CounterStore();
 
 class PromtsPage extends StatefulWidget {
@@ -44,6 +44,7 @@ class _PromtsPageState extends State<PromtsPage> {
   @override
   void initState() {
     super.initState();
+    _viewModel.initService();
     _pageControllerManager = PageControllerManager(Pages.promptPage);
     _pageStore.currentGradient = null;
   }
@@ -83,7 +84,7 @@ class _PromtsPageState extends State<PromtsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: promptPageBg,
+        backgroundColor: LayoutColorLibrary.promptPageBg,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -109,7 +110,7 @@ class _PromtsPageState extends State<PromtsPage> {
               );
             }),
             const SizedBox(
-              height: 25,
+              height: SizedBoxSpacing.midHeight,
             ),
           ],
         ),
@@ -144,6 +145,7 @@ class _PromtsPageState extends State<PromtsPage> {
           case Pages.rapperPage:
             if (_rapperViewModel.selectedVoiceModelUUID != null) {
               _pageStore.finalFunc();
+              _songViewModel.initService();
               sendData();
               _pageStore.changeButtonColor();
             }
@@ -154,7 +156,7 @@ class _PromtsPageState extends State<PromtsPage> {
         }
       },
       gradient: _pageStore.currentGradient,
-      color: elevatedButtonPromptColor,
+      color: ButtonColorLibrary.elevatedButtonPromptColor,
       text: elevatedButtonContinue,
     );
   }
@@ -170,7 +172,7 @@ class _PromtsPageState extends State<PromtsPage> {
   void sendData() async {
     try {
       Navigation.pushReplace(page: const GeneratingLyricsView());
-      await _songViewModel.fetchAndSetSong(_beatsViewModel.selectedTrackUUID,
+      await _songViewModel.fetchSetSong(_beatsViewModel.selectedTrackUUID,
           _rapperViewModel.selectedVoiceModelUUID, _pageStore.parsedText);
       await Future.delayed(
         const Duration(seconds: 3),

@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobx/mobx.dart';
-
-import '../../../ApiService/api_service.dart';
+import 'package:rap_generator/app/ApiService/uberduck_api_service.dart';
 import '../../../Local/model/data_model.dart';
 import '../../../Model/Song/model_song.dart';
 part 'song_view_model.g.dart';
@@ -12,9 +11,13 @@ part 'song_view_model.g.dart';
 class SongViewModel = _SongViewModelBase with _$SongViewModel;
 
 abstract class _SongViewModelBase with Store {
-  final ApiService _apiService = ApiService();
   final _savedBox = Hive.box<DataModel>('songs');
+  late final IUberduckService _service;
 
+  @observable
+  SongModel? createdSong;
+
+  @observable
   List<String> rapperImages = [
     'img_rapper1.png',
     'img_rapper2.png',
@@ -28,18 +31,16 @@ abstract class _SongViewModelBase with Store {
     'img_rapper10.png',
   ];
 
-  @observable
-  SongModel? createdSong;
+  @action
+  void initService() {
+    _service = UberduckService();
+  }
 
   @action
-  Future<void> fetchAndSetSong(String? backingTrack, String? voiceModelUuid,
+  Future<void> fetchSetSong(String? backingTrack, String? voiceModelUuid,
       List<String> lyricsData) async {
-    try {
-      createdSong = await _apiService.responseSong(
-          backingTrack, voiceModelUuid, lyricsData);
-    } catch (e) {
-      throw Exception(e);
-    }
+    createdSong =
+        await _service.responseSong(backingTrack, voiceModelUuid, lyricsData);
   }
 
   @action

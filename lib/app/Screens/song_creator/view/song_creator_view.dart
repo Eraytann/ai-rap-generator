@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Local/model/data_model.dart';
 import 'package:rap_generator/app/Screens/song_creator/widgets/bottom_overlay.dart';
 import 'package:rap_generator/app/Screens/song_creator/widgets/plus_button.dart';
 import 'package:rap_generator/app/Widgets/app_bar_widget.dart';
-import '../../../constants.dart';
+import '../../../Constants/color_class.dart';
+import '../../../Constants/text_class.dart';
 import '../../../rap_generator_icons.dart';
 
 import '../viewmodel/song_creator_view_model.dart';
@@ -60,7 +62,7 @@ class BuildGridView extends StatelessWidget {
           valueListenable: _savedBox.listenable(),
           builder: (context, Box<DataModel> box, _) {
             return Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
+              padding: PaddingSizing.smallHorizontal,
               child: SizedBox(
                 height: double.infinity,
                 child: Column(
@@ -68,7 +70,7 @@ class BuildGridView extends StatelessWidget {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 15),
+                        padding: PaddingSizing.smallEdgeInsetsOnlyL,
                         child: Text(createdSongsTitle),
                       ),
                     ),
@@ -117,12 +119,15 @@ class GridItem extends StatefulWidget {
 class _GridItemState extends State<GridItem> {
   @override
   Widget build(BuildContext context) {
+    double customSBoxHeight = 245;
+    const edgeInsetsOnly = EdgeInsets.only(bottom: 15.0, left: 10, right: 10);
+
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: PaddingSizing.smallEdgeAll,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(13),
         child: SizedBox(
-          height: 245,
+          height: customSBoxHeight,
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -131,8 +136,7 @@ class _GridItemState extends State<GridItem> {
                 fit: BoxFit.cover,
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 15.0, left: 10, right: 10),
+                padding: edgeInsetsOnly,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -144,7 +148,7 @@ class _GridItemState extends State<GridItem> {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: TextColorLibrary.whiteTextColor,
                       ),
                     ),
                     Observer(builder: (_) {
@@ -157,7 +161,7 @@ class _GridItemState extends State<GridItem> {
                           viewModel.isButtonClickedList[widget.index]
                               ? RapGenerator.pauseIcon
                               : RapGenerator.iconPlay,
-                          color: defaultButtonColor,
+                          color: ButtonColorLibrary.defaultButtonColor,
                         ),
                       );
                     })
@@ -174,7 +178,7 @@ class _GridItemState extends State<GridItem> {
                     },
                     child: const Icon(
                       RapGenerator.icon3dots,
-                      color: whiteIcon,
+                      color: LayoutColorLibrary.whiteIcon,
                     ),
                   );
                 }),
@@ -194,7 +198,7 @@ class _GridItemState extends State<GridItem> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: PaddingSizing.midEdgeAll,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

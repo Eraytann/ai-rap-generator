@@ -4,12 +4,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
 import 'package:rap_generator/app/Screens/home/view/home_view.dart';
 import 'package:rap_generator/app/Screens/song/viewmodel/song_view_model.dart';
 import 'package:rap_generator/app/Screens/song/widgets/alert_widget.dart';
 import 'package:rap_generator/app/Widgets/elevated_button_widget.dart';
+import '../../../Constants/color_class.dart';
 import '../../../Navigation/navigator.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 import '../../../rap_generator_icons.dart';
 
 double directionInRadians = -90 * (pi / 180);
@@ -83,6 +85,7 @@ class _SongViewState extends State<SongView> {
       child: Scaffold(
         body: Observer(
           builder: (_) {
+            double customSBoxWidth = 100;
             return Column(
               children: [
                 Stack(
@@ -94,7 +97,7 @@ class _SongViewState extends State<SongView> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 100),
+                    SizedBox(height: customSBoxWidth),
                     Positioned(
                       top: 0,
                       right: 0,
@@ -104,7 +107,7 @@ class _SongViewState extends State<SongView> {
                             onPressed: () {
                               Navigation.push(page: const HomeView());
                             },
-                            color: whiteIcon,
+                            color: LayoutColorLibrary.whiteIcon,
                             icon: const Icon(RapGenerator.iconCross),
                           );
                         },
@@ -126,14 +129,14 @@ class _SongViewState extends State<SongView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      height: 30,
+                      height: SizedBoxSpacing.bigHeight,
                     ),
                     const Text(
                       'King of The Hustle',
                       style: TextStyle(fontSize: 28),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: SizedBoxSpacing.bigHeight,
                     ),
                     const Text(
                       'Rumble Rhymer',
@@ -155,7 +158,7 @@ class _SongViewState extends State<SongView> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 15.0, right: 25.0),
+                      padding: PaddingSizing.customHorizantalMid,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -166,13 +169,14 @@ class _SongViewState extends State<SongView> {
                     ),
                     Column(
                       children: [
-                        const SizedBox(height: 30),
+                        const SizedBox(height: SizedBoxSpacing.bigHeight),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ShaderMask(
                               shaderCallback: (Rect bounds) {
-                                return gradientButtonColor.createShader(bounds);
+                                return ButtonColorLibrary.gradientButtonColor
+                                    .createShader(bounds);
                               },
                               child: IconButton(
                                 onPressed: () {
@@ -190,12 +194,13 @@ class _SongViewState extends State<SongView> {
                             Container(
                               width: 80,
                               height: 80,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                gradient: gradientButtonColor,
+                                gradient:
+                                    ButtonColorLibrary.gradientButtonColor,
                               ),
                               child: IconButton(
-                                color: whiteIcon,
+                                color: LayoutColorLibrary.whiteIcon,
                                 onPressed: () {
                                   if (isPlaying) {
                                     player.pause();
@@ -222,7 +227,8 @@ class _SongViewState extends State<SongView> {
                             ),
                             ShaderMask(
                               shaderCallback: (Rect bounds) {
-                                return gradientButtonColor.createShader(bounds);
+                                return ButtonColorLibrary.gradientButtonColor
+                                    .createShader(bounds);
                               },
                               child: IconButton(
                                 onPressed: () {
@@ -239,7 +245,7 @@ class _SongViewState extends State<SongView> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: SizedBoxSpacing.maxHeight),
                         ElevatedButtonWidget(
                           onPressed: () {
                             setState(
@@ -249,10 +255,10 @@ class _SongViewState extends State<SongView> {
                             );
                           },
                           color: Colors.white,
-                          gradient: gradientButtonColor,
+                          gradient: ButtonColorLibrary.gradientButtonColor,
                           text: elevatedButtonSave,
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: SizedBoxSpacing.maxHeight),
                       ],
                     ),
                   ],

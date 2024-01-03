@@ -35,6 +35,20 @@ mixin _$GPTResponseViewModel on _GPTResponseViewModelBase, Store {
         .run(() => super.fetchGPTResponse(prompt));
   }
 
+  late final _$_GPTResponseViewModelBaseActionController =
+      ActionController(name: '_GPTResponseViewModelBase', context: context);
+
+  @override
+  void initService() {
+    final _$actionInfo = _$_GPTResponseViewModelBaseActionController
+        .startAction(name: '_GPTResponseViewModelBase.initService');
+    try {
+      return super.initService();
+    } finally {
+      _$_GPTResponseViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

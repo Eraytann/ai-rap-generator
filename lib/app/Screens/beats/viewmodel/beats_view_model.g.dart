@@ -96,6 +96,17 @@ mixin _$BeatsViewModel on _BeatsViewModelBase, Store {
   }
 
   @override
+  void initService() {
+    final _$actionInfo = _$_BeatsViewModelBaseActionController.startAction(
+        name: '_BeatsViewModelBase.initService');
+    try {
+      return super.initService();
+    } finally {
+      _$_BeatsViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void onClickControl(BackingTrackModel track, int index) {
     final _$actionInfo = _$_BeatsViewModelBaseActionController.startAction(
         name: '_BeatsViewModelBase.onClickControl');

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rap_generator/app/Constants/padding_class.dart';
+import 'package:rap_generator/app/Model/GptResponse/viewmodel/gpt_response_view_model.dart';
 import '../../../Widgets/app_bar_widget.dart';
 import '../../../Widgets/progress_widget.dart';
-import '../../../constants.dart';
+import '../../../Constants/text_class.dart';
 
 class GeneratingLyricsView extends StatefulWidget {
   const GeneratingLyricsView({super.key});
@@ -11,9 +13,12 @@ class GeneratingLyricsView extends StatefulWidget {
 }
 
 class _GeneratingLyricsViewState extends State<GeneratingLyricsView> {
+  final _viewModel = GPTResponseViewModel();
+
   @override
   void initState() {
     super.initState();
+    _viewModel.initService();
   }
 
   @override
@@ -24,8 +29,8 @@ class _GeneratingLyricsViewState extends State<GeneratingLyricsView> {
         title: Text(generatingSongAppBarTitle),
       ),
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: defaultMediaQueryWidth(context),
+        height: defaultMediaQueryHeight(context),
         padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,7 +53,7 @@ class _GeneratingLyricsViewState extends State<GeneratingLyricsView> {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: SizedBoxSpacing.midHeight,
                         ),
                         Text(
                           rapperName,
@@ -60,7 +65,7 @@ class _GeneratingLyricsViewState extends State<GeneratingLyricsView> {
                     Flexible(
                       flex: 1,
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: PaddingSizing.midEdgeAll,
                         child: Text(
                           createdSongName,
                           style: Theme.of(context).textTheme.headlineSmall,
@@ -74,7 +79,7 @@ class _GeneratingLyricsViewState extends State<GeneratingLyricsView> {
                       child: loadingIndicator(context),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 120, right: 120),
+                      padding: PaddingSizing.customHorizontal,
                       child: Text(
                         progressText,
                         textAlign: TextAlign.center,

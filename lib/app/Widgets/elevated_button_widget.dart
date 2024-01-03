@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+import '../Constants/custom_font_class.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
@@ -51,7 +51,7 @@ class ElevatedButtonWidget extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color: textColor ?? Colors.white,
-                  fontSize: elevatedBtnFontSize,
+                  fontSize: CustomFontSizes.elevatedBtnFontSize,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -60,7 +60,7 @@ class ElevatedButtonWidget extends StatelessWidget {
                   rText!,
                   style: TextStyle(
                     color: textColor ?? Colors.white,
-                    fontSize: elevatedBtnFontSize,
+                    fontSize: CustomFontSizes.elevatedBtnFontSize,
                   ),
                 ),
             ],

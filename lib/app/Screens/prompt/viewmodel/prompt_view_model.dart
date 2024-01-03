@@ -31,6 +31,12 @@ abstract class _PromptViewModelBase with Store {
   @observable
   int clickedButtonIndex = -1;
 
+  @observable
+  String newText = "";
+
+  @observable
+  int? index;
+
   @action
   void updateGrid(String text) {
     currentText = text;
@@ -57,7 +63,18 @@ abstract class _PromptViewModelBase with Store {
   }
 
   @action
-  void setClickedButtonIndex(int index) {
+  void setClickedButtonIndex(index) {
     clickedButtonIndex = index;
+  }
+
+  @action
+  void onChanged(String newText) {
+    onTextChanged(newText);
+  }
+
+  @action
+  void buttonOnPressed(index) {
+    updateGrid(getLyricByGenre(SongGenre.values[index]));
+    setClickedButtonIndex(index);
   }
 }

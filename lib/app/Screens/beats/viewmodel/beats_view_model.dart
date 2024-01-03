@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:rap_generator/app/ApiService/uberduck_api_service.dart';
 import 'package:rap_generator/app/Widgets/Music%20Player/viewmodel/audio_player_view_model.dart';
-import '../../../ApiService/api_service.dart';
 import '../../../Model/Uberduck/BackingTracks/model/model_backing_track.dart';
 part 'beats_view_model.g.dart';
 
@@ -8,7 +8,7 @@ part 'beats_view_model.g.dart';
 class BeatsViewModel = _BeatsViewModelBase with _$BeatsViewModel;
 
 abstract class _BeatsViewModelBase with Store {
-  final ApiService _apiService = ApiService();
+  late final IUberduckService _service;
   final AudioPlayerViewModel audioPlayerViewModel = AudioPlayerViewModel();
 
   @observable
@@ -29,9 +29,14 @@ abstract class _BeatsViewModelBase with Store {
   }
 
   @action
+  void initService() {
+    _service = UberduckService();
+  }
+
+  @action
   Future<List<BackingTrackModel>> fetchBeats() async {
     try {
-      beats = await _apiService.responseBeats();
+      beats = await _service.responseBeats();
       return beats;
     } catch (e) {
       throw Exception(e);

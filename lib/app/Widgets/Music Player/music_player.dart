@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../../constants.dart';
+import '../../Constants/color_class.dart';
 import '../../rap_generator_icons.dart';
 
 class BuildBeatCards extends StatefulWidget {
@@ -68,7 +68,7 @@ class _BuildBeatCardsState extends State<BuildBeatCards> {
         },
         child: ShaderMask(
           shaderCallback: (Rect bounds) {
-            return gradientButtonColor.createShader(bounds);
+            return ButtonColorLibrary.gradientButtonColor.createShader(bounds);
           },
           child: Icon(
             widget.isSelected
